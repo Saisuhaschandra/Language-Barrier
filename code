@@ -1,0 +1,66 @@
+import pandas as pd
+import spacy
+from googletrans import Translator
+from indicnlp.tokenize import indic_tokenize
+from indicnlp.normalize.indic_normalize import IndicNormalizerFactory
+from tqdm import tqdm
+from deep_translator import GoogleTranslator  # Alternative translation library
+
+# Load Dataset
+df = pd.read_csv("test_telugu_news.csv")
+
+# Initialize NLP Tools
+translator = Translator()
+nlp = spacy.blank("te")
+normalizer = IndicNormalizerFactory().get_normalizer("te")
+
+# Function to Preprocess Telugu Text
+def preprocess_text(text):
+    text = normalizer.normalize(text)  # Normalize text
+    tokens = indic_tokenize.trivial_tokenize(text)  # Tokenize using Indic NLP Tokenizer
+    return " ".join(tokens)
+
+# Translation Function (FIXED)
+def translate_text(text, src_lang="te", dest_lang="en"):
+    try:
+        translation = translator.translate(text, src=src_lang, dest=dest_lang)
+        return translation.text  # Access .text property
+    except Exception as e:
+        print(f"GoogleTrans failed: {e}")
+
+    # Use deep_translator as a fallback
+    try:
+        return GoogleTranslator(source=src_lang, target=dest_lang).translate(text)
+    except Exception as e:
+        print(f"Deep Translator failed: {e}")
+
+    return "Translation Unavailable"
+
+# Process Each News Entry
+def process_news():
+    processed_data = []
+    
+    for index, row in tqdm(df.iterrows(), desc="Processing News", total=len(df)):
+        sno = row['SNo']  
+        heading = str(row['heading'])  # Ensure heading is a string
+        body = str(row['body'])  # Ensure body is a string
+
+        # Translate Text
+        translated_heading_en = translate_text(heading, dest_lang="en")  
+        translated_heading_hi = translate_text(heading, dest_lang="hi")  
+        
+        print(f"Original Heading: {heading} | Translated (EN): {translated_heading_en} | Translated (HI): {translated_heading_hi}")
+        print(f"Original Body: {body}")
+
+        processed_data.append([sno, body, heading, translated_heading_en, translated_heading_hi])
+
+    # Create a Processed DataFrame
+    processed_df = pd.DataFrame(processed_data, columns=["SNo", "Original Body", "Preprocessed Original Heading", "Translated Heading (EN)", "Translated Heading (HI)"])
+
+    # Save Results
+    processed_df.to_csv("processed_telugu_news.csv", index=False)
+
+    print("\n✅ NLP Processing Completed! Results saved to 'processed_telugu_news.csv'")
+
+# Run the function
+process_news()
