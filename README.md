@@ -1,18 +1,19 @@
-# Language-Barrier
-🧠 Language Barrier
-📌 Overview
+🌐 Language Barrier — Telugu News Translation Project
+🧠 Overview
 
-Language Barrier is a Natural Language Processing (NLP) project designed to bridge the communication gap between people speaking different languages.
-It translates text, news articles, or conversations from one language to another using advanced machine learning and NLP techniques — enabling smoother multilingual communication.
+Language Barrier is an NLP-based project designed to overcome regional language limitations by automatically translating Telugu news articles into Hindi and English.
+The goal is to make regional news accessible to a wider audience, enabling better information sharing across linguistic boundaries.
 
-🚀 Features
+This project leverages NLP preprocessing, translation APIs, and a robust fallback mechanism to ensure accurate and consistent translations.
 
-🌍 Multi-language Translation — Supports translation between multiple languages (e.g., English, Hindi, Telugu, etc.)
+🚀 Key Features
 
-🤖 NLP-based Preprocessing — Uses tokenization, lemmatization, and normalization for accurate translations
+📰 Telugu News Translation — Converts Telugu news into Hindi and English.
 
-🔄 Dual Translation Mode — Uses multiple translation APIs (like Google Translator and Deep Translator) for reliability
+🤖 NLP Preprocessing — Cleans and normalizes Telugu text before translation using Indic NLP tools.
 
-🧩 Fallback Mechanism — Ensures translation continuity even if one API fails
+🔁 Dual Translation Mechanism — Uses both Google Translator and Deep Translator APIs for reliable results.
 
-📊 User-friendly Interface — Simple command-line or web-based interface to test translations
+⚙️ Fallback Handling — Automatically switches translators if one API fails.
+
+🧩 Language-Aware Tokenization — Handles Telugu-specific scripts, punctuation, and sentence segmentation.
